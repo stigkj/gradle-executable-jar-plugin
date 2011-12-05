@@ -1,0 +1,124 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'gitrelease'
+
+//name = 'gradle-executable-jar-plugin'
+group = 'net.nisgits.gradle'
+version = this.version
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    testCompile 'org.spockframework:spock-core:0.5-groovy-1.8'
+    groovy "org.codehaus.groovy:groovy-all:1.8.4"
+}
+
+task integrationTest(type: GradleBuild, dependsOn: build) {
+    dir = 'src/samples'
+    tasks = ['clean', 'build']
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+     classifier = 'sources'
+     from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+     classifier = 'javadoc'
+     from javadoc.destinationDir
+}
+
+artifacts {
+     archives sourcesJar
+     archives javadocJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+defaultProject = {
+    name 'Gradle Executable Jar plugin'
+    // packaging 'jar' (Packaging is set later through direct modification of the xml)
+    description 'The Gradle Executable Jar plugin creates executable jars with all dependencies embedded.'
+    url 'https://github.com/stigkj/gradle-executable-jar-plugin'
+    inceptionYear '2011'
+
+    scm {
+        developerConnection 'git@github.com:stigkj/gradle-executable-jar-plugin.git'
+        connection 'git://github.com/stigkj/gradle-executable-jar-plugin.git'
+        url 'https://github.com/stigkj/gradle-executable-jar-plugin'
+    }
+
+    licenses {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+        }
+    }
+
+    developers {
+        developer {
+            id 'stigkj'
+            name 'Stig Kleppe-Jørgensen'
+            email 'from.gradle-execjar@nisgits.net'
+            roles {
+                role 'Developer'
+            }
+            timezone '+1'
+        }
+    }
+}
+
+fixedProject = {
+    project defaultProject
+    withXml {
+        def project = it.asNode()
+        project.version[0] + {
+            packaging 'jar'
+        }
+    }
+}
+
+install.repositories.mavenInstaller {
+    pom fixedProject
+
+    beforeDeployment { deployment ->
+        signPom(deployment)
+    }
+}
+
+uploadArchives.repositories.mavenDeployer {
+    pom fixedProject
+    uniqueVersion = false
+
+    beforeDeployment { deployment ->
+        signPom(deployment)
+    }
+
+    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
+    }
+
+    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'no.entitas.gradle:gradle-release-plugin:1.5'
+    }
+}
