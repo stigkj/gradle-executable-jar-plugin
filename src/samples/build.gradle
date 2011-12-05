@@ -29,7 +29,8 @@ configure(project(':execjar')) {
     mainClass = 'net.nisgits.gradle.executablejar.samples.execjar.Main'
 
     dependencies {
-        executableJar 'one-jar:one-jar-boot:0.96'
+        // TODO should be possible to override which One-JAR version to use
+        // executableJar 'one-jar:one-jar-boot:0.96'
         compile project(':util')
     }
 }
