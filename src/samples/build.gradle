@@ -28,6 +28,12 @@ configure(project(':execjar')) {
 
     mainClass = 'net.nisgits.gradle.executablejar.samples.execjar.Main'
 
+    // TODO these manifest entries should be included
+    manifest {
+        attributes 'Created-By': 'me', // should this override or fail the build?
+                   'Another-One': 'thisone'
+    }
+
     dependencies {
         // TODO should be possible to override which One-JAR version to use
         // executableJar 'one-jar:one-jar-boot:0.96'
