@@ -6,7 +6,7 @@ The Executable Jar plugin creates an executable jar from your project with all i
 To use the executable jar plugin, include the following in your build script:
 
 ```groovy
-apply plugin: exeuctable-jar
+apply plugin: 'executable-jar'
 
 buildscript {
     repositories {
