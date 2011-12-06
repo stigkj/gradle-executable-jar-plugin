@@ -1,4 +1,4 @@
-# Executable Jar Plugin for Gradle
+# Executable Jar plugin for Gradle
 
 The Executable Jar plugin creates an executable jar from your project with all its dependencies embedded.
 
