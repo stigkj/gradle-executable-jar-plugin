@@ -19,7 +19,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
 import org.gradle.api.internal.artifacts.repositories.CommonsHttpClientResolver
-import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
 
@@ -90,7 +89,6 @@ public class ExecutableJarPlugin implements Plugin<Project> {
         task.setDescription("Generates an executable jar archive with all runtime dependencies embedded.");
         task.setGroup(BasePlugin.BUILD_GROUP);
 
-        project.getExtensions().getByType(DefaultArtifactPublicationSet.class).
-                addCandidate(new ArchivePublishArtifact(task));
+        project.extensions.defaultArtifacts.addCandidate(new ArchivePublishArtifact(task));
     }
 }
