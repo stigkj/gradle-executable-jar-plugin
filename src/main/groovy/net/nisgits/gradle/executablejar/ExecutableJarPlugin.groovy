@@ -43,11 +43,17 @@ public class ExecutableJarPlugin implements Plugin<Project> {
         project.configurations.add('executableJar') {
             visible = false
             transitive = false
-            description = "The One-JAR library to be used for this project."
+            description = "The One-JAR library to be used for this project which will override the default."
+        }
+
+        project.configurations.add('executableJarDefault') {
+            visible = false
+            transitive = false
+            description = "The default One-JAR library to be used for this project."
         }
 
         project.dependencies {
-            executableJar 'one-jar:one-jar-boot:0.97'
+            executableJarDefault 'one-jar:one-jar-boot:0.97'
         }
 
         ExecutableJar task = project.tasks.add(EXECUTABLE_JAR_TASK_NAME, ExecutableJar);
@@ -59,7 +65,13 @@ public class ExecutableJarPlugin implements Plugin<Project> {
 //      }
 
         task.from {
-            project.configurations.executableJar.collect { file ->
+            def configuration = project.configurations.executableJar
+
+            if (configuration.dependencies.empty) {
+                configuration = project.configurations.executableJarDefault
+            }
+
+            configuration.collect { file ->
                 project.zipTree(file).matching {
                     exclude 'src/**'
                 }
