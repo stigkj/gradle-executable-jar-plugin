@@ -35,8 +35,7 @@ configure(project(':execjar')) {
     }
 
     dependencies {
-        // TODO should be possible to override which One-JAR version to use
-        // executableJar 'one-jar:one-jar-boot:0.96'
+        executableJar 'one-jar:one-jar-boot:0.96'
         compile project(':util')
     }
 }
