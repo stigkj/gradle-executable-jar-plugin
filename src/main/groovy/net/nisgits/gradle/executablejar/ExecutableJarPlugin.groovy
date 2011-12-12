@@ -34,11 +34,6 @@ public class ExecutableJarPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.apply(plugin: 'java')
 
-        project.repositories.add(new CommonsHttpClientResolver(null, null)) {
-            name = 'SourceForge'
-            addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
-        }
-
         project.configurations.add('executableJar') {
             visible = false
             transitive = false
@@ -67,6 +62,15 @@ public class ExecutableJarPlugin implements Plugin<Project> {
             def configuration = project.configurations.executableJar
 
             if (configuration.dependencies.empty) {
+                // Only add SourceForge as a repository if we must use our default version of One-JAR
+                // TODO Should not be needed at all, just have to deploy One-JAR to Maven Central first
+                if (project.repositories.findByName('SourceForge') == null) {
+                    project.repositories.add(new CommonsHttpClientResolver(null, null)) {
+                        name = 'SourceForge'
+                        addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
+                    }
+                }
+
                 configuration = project.configurations.executableJarDefault
             }
 
