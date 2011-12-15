@@ -40,8 +40,10 @@ artifacts {
      archives javadocJar
 }
 
-signing {
-    sign configurations.archives
+if (project.hasProperty('sign')) {
+    signing {
+        sign configurations.archives
+    }
 }
 
 defaultProject = {
@@ -91,8 +93,10 @@ fixedProject = {
 install.repositories.mavenInstaller {
     pom fixedProject
 
-    beforeDeployment { deployment ->
-        signPom(deployment)
+    if (project.hasProperty('sign')) {
+        beforeDeployment { deployment ->
+            signPom(deployment)
+        }
     }
 }
 
@@ -100,8 +104,10 @@ uploadArchives.repositories.mavenDeployer {
     pom fixedProject
     uniqueVersion = false
 
-    beforeDeployment { deployment ->
-        signPom(deployment)
+    if (project.hasProperty('sign')) {
+        beforeDeployment { deployment ->
+            signPom(deployment)
+        }
     }
 
     snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
