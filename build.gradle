@@ -110,6 +110,9 @@ uploadArchives.repositories.mavenDeployer {
         }
     }
 
+    if (!project.hasProperty('sonatypeUsername')) sonatypeUsername = ''
+    if (!project.hasProperty('sonatypePassword')) sonatypePassword = ''
+
     snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
         authentication(userName: sonatypeUsername, password: sonatypePassword)
     }
