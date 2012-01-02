@@ -19,7 +19,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.nisgits.gradle:gradle-executable-jar-plugin:1.0'
+        classpath 'net.nisgits.gradle:gradle-executable-jar-plugin:master-REL-4'
     }
 }
 ```
