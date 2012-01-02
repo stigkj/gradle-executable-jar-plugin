@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011- the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.util.ConfigureUtil
-import org.gradle.api.java.archives.Manifest
 
 /**
  * Generates an executable jar with all the dependencies embedded.
@@ -52,18 +51,12 @@ class ExecutableJar extends Jar {
                 classpath ? classpath.filter {File file -> file.isFile()} : []
             }
         }
-    }
 
-    @Override
-    Manifest getManifest() {
-        Manifest manifest = super.getManifest()
-        manifest.attributes.putAll([
-                'Created-By': 'Gradle Executable Jar task',
-                'Main-Class': 'com.simontuffs.onejar.Boot',
-                'One-Jar-Main-Class': getMainClass()
-        ])
-
-        return manifest
+        manifest {
+            attributes 'Created-By'        : 'Gradle Executable Jar task',
+                       'Main-Class'        : 'com.simontuffs.onejar.Boot',
+                       'One-Jar-Main-Class': "${->getMainClass()}"
+        }
     }
 
     /**

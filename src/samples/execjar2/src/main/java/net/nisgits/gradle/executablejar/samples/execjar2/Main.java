@@ -13,8 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package net.nisgits.gradle.executablejar.samples.execjar2;
 
-/**
- * A {@link org.gradle.api.Plugin} for generating executable jar archives with all runtime dependencies embedded.
- */
-package net.nisgits.gradle.executablejar;
+import java.io.File;
+import java.io.IOException;
+
+import net.nisgits.gradle.executablejar.samples.util.Files;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Files.rm(File.createTempFile("prefix", "suffix"));
+    }
+}
