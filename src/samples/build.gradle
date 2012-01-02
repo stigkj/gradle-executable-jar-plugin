@@ -41,7 +41,7 @@ configure(project(':execjar')) {
     }
 
     dependencies {
-        executableJar 'one-jar:one-jar-boot:0.96'
+        executableJar "org.slf4j:slf4j-api:1.6.1"
         compile project(':util')
     }
 }
