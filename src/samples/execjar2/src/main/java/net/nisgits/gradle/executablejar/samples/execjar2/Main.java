@@ -13,6 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-include 'util'
-include 'execjar1'
-include 'execjar2'
+package net.nisgits.gradle.executablejar.samples.execjar2;
+
+import java.io.File;
+import java.io.IOException;
+
+import net.nisgits.gradle.executablejar.samples.util.Files;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Files.rm(File.createTempFile("prefix", "suffix"));
+    }
+}

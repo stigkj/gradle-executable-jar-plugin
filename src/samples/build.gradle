@@ -23,16 +23,10 @@ configure(project(':util')) {
     apply plugin: 'java'
 }
 
-configure(project(':execjar')) {
+configure(project(':execjar1')) {
     apply plugin: 'executable-jar'
 
-    // Need this to support changes for issue #4
-    project.repositories.add(new CommonsHttpClientResolver(null, null)) {
-        name = 'SourceForge'
-        addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
-    }
-
-    mainClass = 'net.nisgits.gradle.executablejar.samples.execjar.Main'
+    mainClass = 'net.nisgits.gradle.executablejar.samples.execjar1.Main'
 
     // TODO these manifest entries should be included
     manifest {
@@ -43,6 +37,24 @@ configure(project(':execjar')) {
     dependencies {
         executableJar "org.slf4j:slf4j-api:1.6.1"
         compile project(':util')
+    }
+}
+
+configure(project(':execjar2')) {
+    apply plugin: 'executable-jar'
+
+    mainClass = 'net.nisgits.gradle.executablejar.samples.execjar2.Main'
+
+    dependencies {
+        compile project(':util')
+    }
+
+    project.allprojects {
+        it.configurations.all {
+            it.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+                def dependency = artifact.moduleVersion.id
+            }
+        }
     }
 }
 

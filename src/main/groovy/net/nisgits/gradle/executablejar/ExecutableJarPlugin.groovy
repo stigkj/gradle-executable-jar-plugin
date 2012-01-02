@@ -17,6 +17,7 @@ package net.nisgits.gradle.executablejar
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
 import org.gradle.api.internal.artifacts.repositories.CommonsHttpClientResolver
 import org.gradle.api.plugins.BasePlugin
@@ -30,6 +31,7 @@ import org.gradle.api.plugins.JavaPlugin
  */
 public class ExecutableJarPlugin implements Plugin<Project> {
     public static final String EXECUTABLE_JAR_TASK_NAME = "executable-jar";
+    private static final String DEFAULT_ONEJAR_VERSION = "one-jar:one-jar-boot:0.97";
 
     void apply(Project project) {
         project.apply(plugin: 'java')
@@ -37,17 +39,37 @@ public class ExecutableJarPlugin implements Plugin<Project> {
         project.configurations.add('executableJar') {
             visible = false
             transitive = false
-            description = "The One-JAR library to be used for this project which will override the default."
+            description = "The One-JAR library to be used for this project."
         }
 
-        project.configurations.add('executableJarDefault') {
-            visible = false
-            transitive = false
-            description = "The default One-JAR library to be used for this project."
-        }
+        def defaultExecutableJarDependency
 
         project.dependencies {
-            executableJarDefault 'one-jar:one-jar-boot:0.97'
+            defaultExecutableJarDependency = executableJar("${DEFAULT_ONEJAR_VERSION}")
+        }
+
+        project.configurations.executableJar {
+            dependencies.with {
+                whenObjectAdded {
+                    project.logger.info("Using ${it} instead of the default One-JAR library (${DEFAULT_ONEJAR_VERSION})")
+                    removeAll(matching { it.is(defaultExecutableJarDependency) })
+                }
+            }
+
+            incoming.beforeResolve { ResolvableDependencies resolvableDependencies ->
+                if (resolvableDependencies.dependencies.contains(defaultExecutableJarDependency)) {
+                    // Only add SourceForge as a repository if we must use our default version of One-JAR
+                    // TODO Should not be needed at all, just have to deploy One-JAR to Maven Central first
+                    if (project.repositories.findByName('SourceForge') == null) {
+                        project.logger.info("Setting up SourceForge as a repository to download the default One-JAR library")
+
+                        project.repositories.add(new CommonsHttpClientResolver(null, null)) {
+                            name = 'SourceForge'
+                            addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
+                        }
+                    }
+                }
+            }
         }
 
         ExecutableJar task = project.tasks.add(EXECUTABLE_JAR_TASK_NAME, ExecutableJar);
@@ -59,22 +81,7 @@ public class ExecutableJarPlugin implements Plugin<Project> {
 //      }
 
         task.from {
-            def configuration = project.configurations.executableJar
-
-            if (configuration.dependencies.empty) {
-                // Only add SourceForge as a repository if we must use our default version of One-JAR
-                // TODO Should not be needed at all, just have to deploy One-JAR to Maven Central first
-                if (project.repositories.findByName('SourceForge') == null) {
-                    project.repositories.add(new CommonsHttpClientResolver(null, null)) {
-                        name = 'SourceForge'
-                        addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
-                    }
-                }
-
-                configuration = project.configurations.executableJarDefault
-            }
-
-            configuration.collect { file ->
+            project.configurations.executableJar.collect { file ->
                 project.zipTree(file).matching {
                     exclude 'src/**'
                 }

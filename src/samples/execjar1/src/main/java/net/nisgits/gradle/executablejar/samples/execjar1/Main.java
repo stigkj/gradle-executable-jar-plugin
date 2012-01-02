@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.nisgits.gradle.executablejar.samples.execjar;
+package net.nisgits.gradle.executablejar.samples.execjar1;
 
 import java.io.File;
 import java.io.IOException;
