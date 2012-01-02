@@ -84,6 +84,7 @@ public class ExecutableJarPlugin implements Plugin<Project> {
             project.configurations.executableJar.collect { file ->
                 project.zipTree(file).matching {
                     exclude 'src/**'
+                    exclude '**/*.java'
                 }
             }
         }
