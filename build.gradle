@@ -18,7 +18,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'gitrelease'
 
-//name = 'gradle-executable-jar-plugin'
+archivesBaseName = 'gradle-executable-jar-plugin'
 group = 'net.nisgits.gradle'
 version = this.version
 
