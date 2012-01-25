@@ -14,6 +14,9 @@ To use the executable jar plugin, include the following in your build script:
 ```groovy
 apply plugin: 'executable-jar'
 
+// This is the class that starts your application
+mainClass = 'the.class.that.has.Main'
+
 buildscript {
     repositories {
         mavenCentral()
