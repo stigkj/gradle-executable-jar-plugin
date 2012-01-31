@@ -19,7 +19,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact
-import org.gradle.api.internal.artifacts.repositories.CommonsHttpClientResolver
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaPlugin
 
@@ -63,9 +62,10 @@ public class ExecutableJarPlugin implements Plugin<Project> {
                     if (project.repositories.findByName('SourceForge') == null) {
                         project.logger.info("Setting up SourceForge as a repository to download the default One-JAR library")
 
-                        project.repositories.add(new CommonsHttpClientResolver(null, null)) {
-                            name = 'SourceForge'
-                            addArtifactPattern 'https://sourceforge.net/projects/[organization]/files/[organization]/[organization]-[revision]/[module]-[revision].[ext]/download'
+                        project.repositories {
+                            ivy {
+                                artifactPattern 'http://superb-dca2.dl.sourceforge.net/project/[organization]/[organization]/[organization]-[revision]/[module]-[revision].[ext]'
+                            }
                         }
                     }
                 }
