@@ -62,7 +62,7 @@ if (project.hasProperty('sign')) {
     }
 }
 
-defaultProject = {
+ext.defaultProject = {
     name 'Gradle Executable Jar plugin'
     // packaging 'jar' (Packaging is set later through direct modification of the xml)
     description 'The Gradle Executable Jar plugin creates executable jars with all dependencies embedded.'
@@ -96,7 +96,7 @@ defaultProject = {
     }
 }
 
-fixedProject = {
+ext.fixedProject = {
     project defaultProject
     withXml {
         def project = it.asNode()
