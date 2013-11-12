@@ -31,8 +31,9 @@ repositories {
 
 dependencies {
     compile gradleApi()
+    compile "org.codehaus.groovy:groovy-all:1.8.6"
+
     testCompile 'org.spockframework:spock-core:0.5-groovy-1.8'
-    groovy "org.codehaus.groovy:groovy-all:1.8.4"
 }
 
 task integrationTest(type: GradleBuild, dependsOn: build) {
