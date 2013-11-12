@@ -16,11 +16,10 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'gitrelease'
 
 archivesBaseName = 'gradle-executable-jar-plugin'
 group = 'net.nisgits.gradle'
-version = this.version
+version = calculateVersion()
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -138,12 +137,20 @@ uploadArchives.repositories.mavenDeployer {
     }
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
+def calculateVersion() {
+    def gitDescribe = "git describe".execute()
+    int rc = gitDescribe.waitFor()
+
+    if (rc != 0) {
+        throw new IllegalStateException("Could not execute 'git describe': ${gitDescribe.err.text}")
     }
 
-    dependencies {
-        classpath 'no.entitas.gradle:gradle-release-plugin:1.5'
+    def (version, extra) = gitDescribe.in.text.tokenize('-')
+
+    if (extra) {
+        "${version}-SNAPSHOT"
+    } else {
+        version
     }
 }
+
