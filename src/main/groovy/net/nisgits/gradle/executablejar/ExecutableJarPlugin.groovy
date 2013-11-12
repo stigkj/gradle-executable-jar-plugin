@@ -35,7 +35,7 @@ public class ExecutableJarPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.apply(plugin: 'java')
 
-        project.configurations.add('executableJar') {
+        project.configurations.create('executableJar') {
             visible = false
             transitive = false
             description = "The One-JAR library to be used for this project."
@@ -72,7 +72,7 @@ public class ExecutableJarPlugin implements Plugin<Project> {
             }
         }
 
-        ExecutableJar task = project.tasks.add(EXECUTABLE_JAR_TASK_NAME, ExecutableJar);
+        ExecutableJar task = project.tasks.create(EXECUTABLE_JAR_TASK_NAME, ExecutableJar);
         project.tasks.assemble.dependsOn(task)
 
 // TODO maybe have dir for native libs here?
