@@ -43,8 +43,8 @@ class ExecutableJar extends Jar {
     ExecutableJar() {
         appendix = EXEC_JAR_APPENDIX
 
-        // Add as separate specs, so they are not affected by the changes to the main spec
-        lib = copyAction.rootSpec.addChild()
+        // Add as separate specs, so they are not affected by changes to the main spec
+        lib = rootSpec.addChild()
         lib.into('lib') {
             from {
                 def classpath = getClasspath()
