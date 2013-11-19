@@ -22,7 +22,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.nisgits.gradle:gradle-executable-jar-plugin:master-REL-6'
+        classpath 'net.nisgits.gradle:gradle-executable-jar-plugin:1.7.0'
     }
 }
 ```
