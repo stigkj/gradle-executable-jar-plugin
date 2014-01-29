@@ -1,4 +1,4 @@
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stigkj/gradle-executable-jar-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Build Status](https://travis-ci.org/stigkj/gradle-executable-jar-plugin.png?branch=master)](https://travis-ci.org/stigkj/gradle-executable-jar-plugin) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stigkj/gradle-executable-jar-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 # Executable Jar plugin for Gradle
 
