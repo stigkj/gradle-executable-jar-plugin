@@ -26,3 +26,7 @@ buildscript {
     }
 }
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stigkj/gradle-executable-jar-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
