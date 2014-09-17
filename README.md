@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/stigkj/gradle-executable-jar-plugin.png?branch=master)](https://travis-ci.org/stigkj/gradle-executable-jar-plugin) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stigkj/gradle-executable-jar-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+# ABANDONED - use something like the [gradle-capsule-plugin](https://github.com/danthegoodman/gradle-capsule-plugin) instead
 
 # Executable Jar plugin for Gradle
 
 The Executable Jar plugin creates an executable jar from your project with all its runtime dependencies embedded.
 
-This means, when using this plugin in a build, you will get a *artifact_-execjar.jar* artifact than can be run like this:
+This means, when using this plugin in a build, you will get a *artifact_name-execjar.jar* artifact that can be run like this:
 
 ```
 java -jar artifact_name-execjar.jar
